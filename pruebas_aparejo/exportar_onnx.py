@@ -1,10 +1,11 @@
-"""
-Exporta el modelo entrenado a formato ONNX.
-"""
+"""Exporta el modelo entrenado a formato ONNX."""
+
 from pathlib import Path
+
 from ultralytics import YOLO
 
 MODEL_PATH = Path("runs/classify/runs_aparejo/cls_v2_11k/weights/best.pt")
+
 
 def main():
     model_path = MODEL_PATH
@@ -24,6 +25,7 @@ def main():
         print(f"✅ Guardado modelo ONNX en: {onnx_path}")
     except Exception as e:
         print(f"❌ Error al exportar a ONNX: {e}")
+
 
 if __name__ == "__main__":
     main()
