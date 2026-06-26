@@ -6,12 +6,12 @@ Salida:
   dataset/<estado>/<id>_<n>.jpg        imágenes organizadas por dictamen
   dataset/etiquetas.csv                tabla con metadatos de cada imagen
 """
+
 import csv
 import re
 from pathlib import Path
 
 import requests
-
 from kull_api import KullClient
 
 OUT = Path("dataset")
@@ -47,16 +47,18 @@ def main(paginas=1, limit=10):
                     print(f"  ! error {url}: {e}")
                     ok = False
                 if ok:
-                    filas.append({
-                        "archivo": str(ruta),
-                        "producto_id": p["id"],
-                        "nombre": p.get("nombre", ""),
-                        "tipo": (p.get("productoCatalogo") or {}).get("descripcion", ""),
-                        "estado": estado,
-                        "defecto": defecto,
-                        "faena": (p.get("informe") or {}).get("faenaNombre", ""),
-                        "url": url,
-                    })
+                    filas.append(
+                        {
+                            "archivo": str(ruta),
+                            "producto_id": p["id"],
+                            "nombre": p.get("nombre", ""),
+                            "tipo": (p.get("productoCatalogo") or {}).get("descripcion", ""),
+                            "estado": estado,
+                            "defecto": defecto,
+                            "faena": (p.get("informe") or {}).get("faenaNombre", ""),
+                            "url": url,
+                        }
+                    )
                     print(f"  ✓ {ruta}  [{estado}] {defecto[:40]}")
 
     with open(OUT / "etiquetas.csv", "w", newline="", encoding="utf-8") as f:
@@ -65,10 +67,11 @@ def main(paginas=1, limit=10):
         w.writerows(filas)
 
     print(f"\nTotal imágenes descargadas: {len(filas)}")
-    print(f"Etiquetas en: {OUT/'etiquetas.csv'}")
+    print(f"Etiquetas en: {OUT / 'etiquetas.csv'}")
 
 
 if __name__ == "__main__":
     import sys
+
     paginas = int(sys.argv[1]) if len(sys.argv) > 1 else 1
     main(paginas=paginas)
