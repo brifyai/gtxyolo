@@ -1,8 +1,8 @@
 """
 Prueba 2 y 3: Análisis cualitativo con APIs de visión (Claude y GPT-4o).
-Manda la foto + una pregunta de experto en aparejos y devuelve un dictamen.
+Manda la photo + una pregunta de experto en aparejos y devuelve un dictamen.
 
-Requiere variables de entorno:
+Require variables de entorno:
     export ANTHROPIC_API_KEY=sk-ant-...
     export OPENAI_API_KEY=sk-...
 
@@ -11,6 +11,7 @@ Uso:
     python vision_api.py entradas/mi_foto.jpg gpt
     python vision_api.py entradas/mi_foto.jpg ambos
 """
+
 import base64
 import mimetypes
 import os
@@ -23,7 +24,7 @@ Analiza la eslinga, grillete u otro elemento de izaje en la imagen.
 Responde SOLO en este formato:
 - ELEMENTO: (eslinga textil / grillete / cadena / gancho / otro)
 - ESTADO: (OK / DESGASTE LEVE / CONDENAR / NO SE PUEDE DETERMINAR)
-- DEFECTOS VISIBLES: lista breve (cortes, deshilachado, deformación, corrosión, etc.)
+- DEFECTOS VISIBLE: lista breve (cortes, deshilachado, deformación, corrosión, etc.)
 - CONFIANZA: (alta / media / baja)
 - RECOMENDACIÓN: una frase
 
@@ -39,30 +40,42 @@ def encode(img_path: Path):
 
 def run_claude(img_path: Path):
     from anthropic import Anthropic
+
     mime, data = encode(img_path)
     client = Anthropic()
     msg = client.messages.create(
         model="claude-opus-4-8",
         max_tokens=600,
-        messages=[{"role": "user", "content": [
-            {"type": "image", "source": {"type": "base64", "media_type": mime, "data": data}},
-            {"type": "text", "text": PROMPT},
-        ]}],
+        messages=[
+            {
+                "role": "user",
+                "content": [
+                    {"type": "image", "source": {"type": "base64", "media_type": mime, "data": data}},
+                    {"type": "text", "text": PROMPT},
+                ],
+            }
+        ],
     )
     return msg.content[0].text
 
 
 def run_gpt(img_path: Path):
     from openai import OpenAI
+
     mime, data = encode(img_path)
     client = OpenAI()
     resp = client.chat.completions.create(
         model="gpt-4o",
         max_tokens=600,
-        messages=[{"role": "user", "content": [
-            {"type": "text", "text": PROMPT},
-            {"type": "image_url", "image_url": {"url": f"data:{mime};base64,{data}"}},
-        ]}],
+        messages=[
+            {
+                "role": "user",
+                "content": [
+                    {"type": "text", "text": PROMPT},
+                    {"type": "image_url", "image_url": {"url": f"data:{mime};base64,{data}"}},
+                ],
+            }
+        ],
     )
     return resp.choices[0].message.content
 
@@ -78,11 +91,13 @@ def main(img_path: str, backend: str):
         try:
             if b == "claude":
                 if not os.getenv("ANTHROPIC_API_KEY"):
-                    print("Falta ANTHROPIC_API_KEY"); continue
+                    print("Falta ANTHROPIC_API_KEY")
+                    continue
                 print(run_claude(img_path))
             elif b == "gpt":
                 if not os.getenv("OPENAI_API_KEY"):
-                    print("Falta OPENAI_API_KEY"); continue
+                    print("Falta OPENAI_API_KEY")
+                    continue
                 print(run_gpt(img_path))
             else:
                 print(f"Backend desconocido: {b}")
