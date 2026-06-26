@@ -2,10 +2,13 @@
 Exporta el modelo entrenado a formatos optimizados para móviles (TFLite y CoreML)
 para permitir el uso 100% offline en dispositivos Android e iOS.
 """
+
 from pathlib import Path
+
 from ultralytics import YOLO
 
 MODEL_PATH = Path("runs/classify/runs_aparejo/cls_v2_11k/weights/best.pt")
+
 
 def main():
     model_path = MODEL_PATH
@@ -34,6 +37,7 @@ def main():
         print(f"✅ Guardado modelo CoreML en: {coreml_path}")
     except Exception as e:
         print(f"❌ Error al exportar a CoreML: {e}")
+
 
 if __name__ == "__main__":
     main()
