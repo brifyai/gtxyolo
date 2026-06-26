@@ -17,11 +17,11 @@ def main():
     model.train(
         data=DATA,
         epochs=40,
-        imgsz=640,          # Alta resolución para no perder detalles de fisuras en metales
-        batch=16,           # Batch size de 16 (ideal para GPUs de 8GB/12GB VRAM como la RTX 5060 a 640x640)
+        imgsz=800,          # Máxima resolución (800x800) para detectar fisuras diminutas
+        batch=32,           # Subimos batch size a 32 gracias a tus 16GB de VRAM
         device=device,
         project="runs_aparejo",
-        name="cls_v3_large_640",
+        name="cls_v3_large_800",
         patience=10,
     )
     # Evaluación final sobre el split de test

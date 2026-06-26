@@ -29,7 +29,7 @@ CLASES = {"Conforme": "conforme", "Dado de baja": "dado_de_baja"}
 SPLIT = (0.70, 0.15, 0.15)
 random.seed(42)
 MAX_WORKERS = 24
-IMGSZ = 640
+IMGSZ = 800
 
 # Palabras clave para identificar rechazos puramente administrativos
 ADMIN_KEYWORDS = ["placa", "tarjeta", "rotulacion", "rotulo", "ilegible", "identificacion", "certif", "marca", "sin placa", "placa de carga"]

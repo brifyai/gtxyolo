@@ -7,7 +7,7 @@ from pathlib import Path
 from ultralytics import YOLO
 import torch
 
-MODEL_PATH = Path("runs/classify/runs_aparejo/cls_v3_large_640/weights/best.pt")
+MODEL_PATH = Path("runs/classify/runs_aparejo/cls_v3_large_800/weights/best.pt")
 ETIQUETAS_CSV = Path("dataset_cls/etiquetas.csv")
 
 def main():
