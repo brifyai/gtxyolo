@@ -5,8 +5,10 @@ Detecta objetos a partir de prompts de texto. Corre 100% local.
 Uso:
     python yolo_world.py entradas/mi_foto.jpg
 """
+
 import sys
 from pathlib import Path
+
 from ultralytics import YOLOWorld
 
 # Clases que queremos detectar, descritas en texto libre (inglés funciona mejor).
