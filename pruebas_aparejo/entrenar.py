@@ -2,11 +2,15 @@
 Entrena un clasificador YOLO Large (conforme vs dado_de_baja) en el dataset balanceado v3.
 Usa CUDA (GPU NVIDIA) si está disponible, o MPS (Apple Silicon) como fallback.
 """
+
 from pathlib import Path
-from ultralytics import YOLO
+
 import torch
 
+from ultralytics import YOLO
+
 DATA = str(Path("dataset_cls").resolve())
+
 
 def main():
     # Seleccionar dispositivo automáticamente (CUDA en tu nueva RTX 5060, MPS en Mac, o CPU)
@@ -17,8 +21,8 @@ def main():
     model.train(
         data=DATA,
         epochs=40,
-        imgsz=800,          # Máxima resolución (800x800) para detectar fisuras diminutas
-        batch=32,           # Subimos batch size a 32 gracias a tus 16GB de VRAM
+        imgsz=800,  # Máxima resolución (800x800) para detectar fisuras diminutas
+        batch=32,  # Subimos batch size a 32 gracias a tus 16GB de VRAM
         device=device,
         project="runs_aparejo",
         name="cls_v3_large_800",
@@ -28,6 +32,7 @@ def main():
     metrics = model.val(split="test")
     print("\n=== Métricas en TEST ===")
     print("top1 accuracy:", metrics.top1)
+
 
 if __name__ == "__main__":
     main()
